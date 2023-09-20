@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>KeyWordTest</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="./css/element_UI.css">
+		<link rel="stylesheet" href="./css/index.css">
+		<script src="./javaScript/vue.js"></script>
+		<script src="./javaScript/element_UI.js"></script>
+		<script src="./javaScript/jquery-3.4.1.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<!-- 顶部导航 -->
+			<nav>
+				<el-row class="nav-box">
+					<el-col :span="24">
+						<div class="top-nav-box">
+							<div class="left-box">
+								<!-- 图标 -->
+								<img src="./images/key.png" alt="" class="nav-log-icon">
+								<!-- 名称 -->
+								<span class="nav-name-text">KeyWordTest</span>
+							</div>
+							<div class="right-box">
+								<!-- 检索 -->
+								<el-autocomplete class="nav-search-text" highlight-first-item popper-class="my-autocomplete" v-model="state" :fetch-suggestions="querySearch" placeholder="搜索文档" @select="handleSelect">
+									<i class="el-icon-search el-input__icon" slot="suffix" @click="handleIconClick"></i>
+									<template slot-scope="{item}">
+										<div>
+											<span class="el-icon-s-promotion"></span>
+											<span class="nav-search-box-title">{{item.title}}</span>
+											<span class="nav-search-box-details">{{item.details}}</span>
+										</div>
+										<div class="nav-search-box-address">
+											<span class="el-icon-location-information"></span>
+											{{item.address}}
+										</div>
+									</template>
+								</el-autocomplete>
+								<!-- <el-input class="nav-search-text" placeholder="搜索文档" suffix-icon="el-icon-search" v-model="nav_Search"></el-input> -->
+								<!-- gitee地址 -->
+								<a href="https://gitee.com/wang_qiao123/kdtest"  target="_blank">
+									<img src="./images/git.png" alt="" class="nav-git-icon">
+									<span class="nav-git-text">gitee</span>
+								</a>
+							</div>
+						</div>
+					</el-col>
+					<el-col :span="24">
+						<div class="bottom-nav-box">
+							<el-menu :default-active="activeIndex" active-text-color="#fff" class="el-menu-demo" mode="horizontal" @select="horizontal">
+								<el-menu-item index="1">首页</el-menu-item>
+								<el-menu-item index="2">入门指南</el-menu-item>
+								<el-menu-item index="3">数据文件</el-menu-item>
+								<el-menu-item index="4">关键字</el-menu-item>
+								<el-menu-item index="5">进阶使用</el-menu-item>
+								<el-menu-item index="6">插件开发</el-menu-item>
+								<el-menu-item index="7">更新日志</el-menu-item>
+							</el-menu>
+						</div>
+					</el-col>
+				</el-row>
+			</nav>
+			<!-- markedDown -->
+			<div class="marked-box">
+				<el-row >
+					<el-col :span="24">
+						<iframe id="Ateon-SetParent-iframe" :src="frame_html" frameborder="0"></iframe>
+					</el-col>
+				</el-row>
+			</div>
+		</div>
+		<script type="text/javascript">
+			new Vue({
+				el: '#app',
+				data() {
+					return {
+						nav_Search: null,
+						activeIndex: "1",
+						frame_html: "./pages/shouYei/index.html",
+						restaurants: [],
+						state: '',
+						all_restaurants: {}
+					}
+				},
+				// 生命周期钩子-挂载后执行
+				mounted() {this.loadAll();},
+				methods:{
+					// 导航按钮点击
+					horizontal(key) {
+						var that = this;
+						console.log(key);
+						if(key == "1"){
+							// 首页
+							that.frame_html = "./pages/shouYei/index.html"
+						}
+						if(key == "2"){
+							// 入门指南
+							that.frame_html = "./pages/ruMenZhiNan/index.html"
+						}
+						if(key == "3"){
+							// 数据文件
+							that.frame_html = "./pages/shuJuWenJian/index.html"
+						}
+						if(key == "4"){
+							// 关键字
+							that.frame_html = "./pages/guanJianZi/index.html"
+						}
+						if(key == "5"){
+							// 进阶使用
+							that.frame_html = "./pages/jinJieShiYong/index.html"
+						}
+						if(key == "6"){
+							// 插件开发
+							that.frame_html = "./pages/chaJianKaiFa/index.html"
+						}
+						if(key == "7"){
+							// 更新日志
+							that.frame_html = "./pages/gengXinRiZi/index.html"
+						}
+					},
+					querySearch(queryString, cb) {
+						var restaurants = this.restaurants;
+						var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+						// 调用 callback 返回建议列表的数据
+						cb(results);
+					},
+					createFilter(queryString) {
+						return (restaurant) => {
+							return (restaurant.title.toLowerCase().indexOf(queryString.toLowerCase()) != -1);
+						};
+					},
+					loadAll() {
+						var that = this;
+						var that_array = [];
+						$.getJSON("./data/search.json",
+							function (data) {
+								that.all_restaurants = data;
+								for (var key in data) {
+									for (var item in data[key]['search_terms']){
+										that_array.push(data[key]['search_terms'][item]);
+									};
+								};
+								console.log(that_array)
+								that.restaurants = that_array;
+							}
+						)
+					},
+					handleSelect(item) {
+						var that = this;
+						// console.log(item);
+						var parent_key = item['parent'];
+						var parent_json = that.all_restaurants[parent_key];
+						that.activeIndex = parent_json['nav_index'];
+						that.frame_html = parent_json['frame_src'] + "?page_nav_index=" + item['page_nav_index'];
+					},
+					handleIconClick(ev) {
+						console.log(ev);
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

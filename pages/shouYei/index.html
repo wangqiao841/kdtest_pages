@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>框架简介</title>
+		<link rel="stylesheet" href="../../css/marked_css.css" />
+		<link rel="stylesheet" href="../../css/element_UI.css">
+		<script src="../../javaScript/vue.js"></script>
+		<script src="../../javaScript/jquery-3.4.1.js"></script>
+		<script src="../../javaScript/marked.min.js"></script>
+		<script src="../../javaScript/element_UI.js"></script>
+		<script src="../../javaScript/clipboard.min.js"></script>
+		<script src="../../javaScript/cp.js"></script>
+		<style type="text/css">
+			.marked-box{
+				padding: 0 100px;
+				box-sizing: border-box;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<el-row class="marked-box">
+				<el-col :span="24">
+					<div v-html="md"></div>
+				</el-col>
+			</el-row>
+		</div>
+		<script type="text/javascript">
+			new Vue({
+				el: '#app',
+				data() {
+					return {
+						md: null,
+					}
+				},
+				// 生命周期钩子-挂载后执行
+				mounted() {
+					var that = this;
+					that.this_ajax("../../md/kdtest框架简介.md")
+				},
+				methods:{
+					this_ajax(src) {
+						var that = this;
+						$.ajax({
+							type:"get",
+							url:src,
+							dataType:"html",
+							async: false,
+							success:function(res){
+								var reg = new RegExp("<pre","g");
+								var content = that.md = marked.parse(res);
+								that.md = content.replace(reg, "<pre class='prettyprint linenums'");
+								$(function(){$.fn.copy_init();})
+								$(function(){prettyPrint();})
+							}
+						});
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

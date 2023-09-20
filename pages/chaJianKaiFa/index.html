@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>插件开发</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" href="../../css/marked_css.css" />
+		<link rel="stylesheet" href="../../css/obsidian-theme.css">
+		<link rel="stylesheet" href="../../css/element_UI.css">
+		<link rel="stylesheet" href="../../css/public-nav-tructure.css">
+		<script src="../../javaScript/vue.js"></script>
+		<script src="../../javaScript/jquery-3.4.1.js"></script>
+		<script src="../../javaScript/marked.min.js"></script>
+		<script src="../../javaScript/prettify.js"></script>
+		<script src="../../javaScript/element_UI.js"></script>
+		<script src="../../javaScript/clipboard.min.js"></script>
+		<script src="../../javaScript/cp.js"></script>
+	</head>
+
+	<body>
+		<div id="app">
+			<!-- markedDown -->
+			<div class="marked-box">
+				<el-row>
+					<el-col :span="5">
+						<!-- 左侧导航 -->
+						<div class="marked-nav-box">
+							<el-menu :default-active="activeIndex" class="el-menu-demo" mode="vertical" @select="horizontal">
+								<el-submenu index="1">
+									<template slot="title">入门</template>
+									<el-menu-item index="准备工作">准备工作</el-menu-item>
+									<el-menu-item index="编写示例">编写示例</el-menu-item>
+								</el-submenu>
+								<el-submenu index="2">
+									<template slot="title">使用上手</template>
+									<el-menu-item index="安装">安装</el-menu-item>
+									<el-menu-item index="更新">更新</el-menu-item>
+									<el-menu-item index="卸载">卸载</el-menu-item>
+									<el-menu-item index="显示">显示</el-menu-item>
+								</el-submenu>
+							</el-menu>
+						</div>
+					</el-col>
+					<el-col :span="19">
+						<!-- 中间内容 -->
+						<div class="marked-content-box" v-html="md"></div>
+					</el-col>
+				</el-row>
+			</div>
+		</div>
+		<script type="text/javascript">
+			new Vue({
+				el: '#app',
+				data() {
+					return {
+						activeIndex: "准备工作",
+						md: null,
+						file_value: {}
+					}
+				},
+				created() {
+					var that = this;
+					// 数据分段，导航生成
+					that.get_ajax("../../md/plugin/自定义插件开发.md")
+					// 检测是否有传入数据
+					var date = that.get_frame_url();
+					if (date) {that.activeIndex = date;};
+				},
+				// 生命周期钩子-挂载后执行
+				mounted() {
+					var that = this;
+					that.this_ajax(that.activeIndex)
+				},
+				methods:{
+					// 导航按钮点击
+					horizontal(key) {
+						var that = this;
+						console.log(key);
+						that.this_ajax(key);
+					},
+					get_ajax(src){
+						var that = this;
+						$.ajax({
+							type: "get",
+							url: src,
+							dataType: "html",
+							async: false,
+							success: function(res){
+								var res_new = res.split("##");
+								// console.log(res_new)
+								for (item in res_new){
+									var value = res_new[item].split('\n')[0];
+									var key = value.replace(/[# \r]/g, '');
+									if (key) {that.file_value[key] = res_new[item]}
+								}
+							}
+						});
+					},
+					this_ajax(key) {
+						var that = this;
+						var reg = new RegExp("<pre", "g");
+						var content = that.md = marked.parse(that.file_value[key]);
+						that.md = content.replace(reg, "<pre class='prettyprint linenums'");
+						$(function(){$.fn.copy_init();})
+						$(function(){prettyPrint();})
+					},
+					get_frame_url() {
+						var reg = new RegExp("[^\?&]?" + encodeURI(name) + "=[^&]+");
+						var arr = window.parent.document.getElementById("Ateon-SetParent-iframe").contentWindow.location.search.match(reg);
+						if (arr != null) {
+							return decodeURI(arr[0].substring(arr[0].search("=") + 1));
+						};
+						return "";
+					}
+				}
+			})
+		</script>
+	</body>
+
+</html>

@@ -1,4 +1,4 @@
-# keyWordTest (kdtest)  
+# keyWordTest (kdtest) 
 
 ### 介绍
 * 基于“python + 关键字驱动技术”的一套以降低使用者学习成本为目地的自动化测试框架；
@@ -8,11 +8,11 @@
 ### 安装教程
 你可以通过pip包管理工具键入“框架名称” 或者 “框架.whl文件的绝对路径(存放在仓库的dist文件夹下)”完成框架的安装，详情如下:
 
-* `pip install -i https://test.pypi.org/simple/ kdtest==1.1.4`
-* `pip install  C:/xxxxxx/kdtest-1.1.4-py3-none-any.whl`
+* `pip install -i https://test.pypi.org/simple/ kdtest==1.1.5`
+* `pip install  C:/xxxxxx/kdtest-1.1.5-py3-none-any.whl`
 
 你可以在控制台中键入 `kdtest -v` 来验证是否安装成功。
-> 1.1.4为当前框架最新版本
+> 1.1.5为当前框架最新版本
 ### 更新日志
 <a href="https://blog.csdn.net/A1352074/article/details/131845554" target="_blank"> 框架更新日志 >></a>
 ### 使用教程

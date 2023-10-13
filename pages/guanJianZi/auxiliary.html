@@ -37,7 +37,10 @@
 							<el-menu :default-active="activeIndexOld" class="el-menu-demo" mode="vertical" @select="horizontal">
 								<el-submenu index="1">
 									<template slot="title">辅助关键字方法 (auxiliary)</template>
-									<el-menu-item index="item" v-for="item in fist_nav" :index="item">{{item}}</el-menu-item>
+									<el-menu-item index="item" v-for="item in fist_nav" :index="item">
+										<img src="../../images/function.png" alt="" class="nav-item-icon">
+										{{item}}
+									</el-menu-item>
 								</el-submenu>
 							</el-menu>
 						</div>

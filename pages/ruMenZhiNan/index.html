@@ -28,7 +28,10 @@
 							<el-menu :default-active="activeIndex" class="el-menu-demo" mode="vertical" @select="horizontal">
 								<el-submenu index="key" v-for="(value, key, index) in fist_nav" :key="index" :index="key">
 									<template slot="title">{{key}}</template>
-									<el-menu-item index="item" v-for="item in fist_nav[key]" :index="item">{{item}}</el-menu-item>
+									<el-menu-item index="item" v-for="item in fist_nav[key]" :index="item">
+										<img src="../../images/table.png" alt="" class="nav-item-icon">
+										{{item}}
+									</el-menu-item>
 								</el-submenu>
 							</el-menu>
 						</div>
@@ -107,8 +110,10 @@
 					this_ajax(key) {
 						var that = this;
 						var reg = new RegExp("<pre", "g");
+						var imgReg = new RegExp("<img", "g");
 						var content = that.file_value[key];
-						that.md = content.replace(reg, "<pre class='prettyprint linenums'");
+						var contentImg = content.replace(reg, "<pre class='prettyprint linenums'");
+						that.md = contentImg.replace(imgReg, "<img class='md-img-table'");
 						$(function(){$.fn.copy_init();})
 						$(function(){prettyPrint();})
 					},

@@ -27,7 +27,11 @@
 							<el-menu :default-active="activeIndex" class="el-menu-demo" mode="vertical" @select="horizontal">
 								<el-submenu index="key" v-for="(value, key, index) in fist_nav" :key="index" :index="key">
 									<template slot="title">{{key}}</template>
-									<el-menu-item index="item" v-for="item in fist_nav[key]" :index="item">{{item}}</el-menu-item>
+									<el-menu-item index="item" v-for="item in fist_nav[key]" :index="item">
+										<img src="../../images/function.png" alt="" class="nav-item-icon" v-if="!/^[\u4E00-\u9FA5]+$/.test(item)">
+										<img src="../../images/table.png" alt="" class="nav-item-icon" v-else>
+										{{item}}
+									</el-menu-item>
 								</el-submenu>
 							</el-menu>
 						</div>

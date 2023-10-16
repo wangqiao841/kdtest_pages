@@ -14,10 +14,6 @@
 
 你可以在控制台中键入 `kdtest -v` 来验证是否安装成功。
 > 1.1.5为当前框架最新版本；推荐安装正式版
-### 更新日志
-<a href="https://blog.csdn.net/A1352074/article/details/131845554" target="_blank"> 框架更新日志 >></a>
-### 使用教程
-<a href="https://blog.csdn.net/A1352074/article/details/131835073" target="_blank"> 框架使用说明文档 >></a>
 ### 亮点
 灵活、易用、成本低
 ### 框架特点

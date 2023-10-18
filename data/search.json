@@ -435,7 +435,7 @@
 				"details": "“OA选人组件操作”插件方法，书写使用说明及示例", 
 				"address": "进阶使用 - OA_WebUI插件方法说明 - personnelChoice方法",
 				"page_nav_index": "personnelChoice方法"
-			},,{
+			},{
 				"parent": "JinJieShiYong",
 				"title": "personnelChoiceIteration插件方法", 
 				"details": "“OA选人组件操作”插件方法 - 功能迭代，书写使用说明及示例", 

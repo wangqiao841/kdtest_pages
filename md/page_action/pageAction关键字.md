@@ -211,32 +211,34 @@ keyword.refresh_frame()  # 当前iframe页面刷新
 **参数**<br/>
 元素定位参数 | 操作参数     
 -------- | -----  
-无参 | iframe标签ID属性值 / iframe标签在窗口中索引位置(索引从0开始)
+无参 | iframe标签ID属性值 / iframe标签在窗口中索引位置(索引从0开始) / iframe标签src属性值
 
 **用例步骤使用示例**
 用例name     | 序号     | 操作步骤    | 关键字     | 元素定位信息  | 操作值
 -------- | -----  | -----  | -----  | -----  | ----- 
-区分元素定位数据 | n | xxx | switch_frame| | id / index
+区分元素定位数据 | n | xxx | switch_frame| | id / index / src
 
 用例name     | 序号     | 操作步骤    | 关键字    | 定位方式 | 定位表达式  | 操作值
 -------- | -----  | -----  | -----  | -----  | ----- | -----
-不区分元素定位数据 | n | xxx  | switch_frame| | | id / index
+不区分元素定位数据 | n | xxx  | switch_frame| | | id / index / src
 
 **脚本使用示例**
 ```python
 # 导入框架
 import kdtest
 keyword = kdtest.GSTORE['keyword']  # 取出关键字对象
-keyword.switch_frame(id || index)  # 焦点跳转到iframe中
+keyword.switch_frame(id || index || src)  # 焦点跳转到iframe中
 ```
 
 **注意事项**
 * 关键字用于将焦点跳转到指定的iframe页面中，已达到获取或者操作指定iframe页面中元素的目的。
 * 关键字并不能支持一次性多级跳转，假设当前页面是一个两级嵌套的iframe页面，如果想要跳转到最底层的iframe页面中，你需要一级一级的调用它完成跳转，直接跳转到最底层会出现错误。
 * 操作值中的“id” 代表指定页面所在的iframe标签的id属性值，关键字可根据它完成跳转。
-* 操作值中的“index” 代表指定页面所在iframe标签在整个页面中的索引位置(起始为0)，在iframe标签不存在id属性的情况下关键字可根据它完成跳转。
+* 操作值中的“index” 代表指定页面所在iframe标签在整个页面中的索引位置(起始为0)。
+* 操作值中的“src” 代表指定页面所在iframe标签的src属性值，在传值时你只需要将属性值中一些主要的信息传入即可，例如: `Email.php`、 `/test.js`、 `python/web/test`、 `http://www.xx.xx/index`、 `https://www.xx.xx/index`。
+* 在iframe标签不存在id属性的情况下关键字可根据“index 索引” 和 “src 属性值”完成跳转，但是应尽可能的使用id属性进行跳转。
 * 同样如果使用index索引值进行定位，你不必在意它是否为数值类型的数字，关键字会自行转换。
-* 注意关键字对iframe标签的定位采用的是“操作值”单元格中的id或者index索引值，并不是“元素定位信息”，故它不需要给“元素定位信息”单元格赋值。
+* 注意关键字对iframe标签的定位采用的是“操作值”单元格中的id属性值、index索引值或src属性值，并不是“元素定位信息”，故它不需要给“元素定位信息”单元格赋值。
 ***
 ##  窗口处理
 ### driver_back() 关键字

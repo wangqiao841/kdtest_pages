@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>goto_Modular插件方法菜单标识</title>
+		<link rel="shortcut icon" href="../../images/key.ico" type="image/x-icon"/>
 		<link rel="stylesheet" href="../../css/marked_css.css" />
 		<link rel="stylesheet" href="../../css/element_UI.css">
 		
@@ -15,10 +16,33 @@
 				padding: 0 100px;
 				box-sizing: border-box;
 			}
+			.popover-button{
+				position: fixed;
+				top: 2vh;
+				left: 1vw;
+				z-index: 999;
+			}
+			.el-drawer{
+				width: 90% !important;
+			}
+			.el-drawer .frame-box{
+				width: 100%;
+				height: 90vh;
+			}
 		</style>
 	</head>
 	<body>
 		<div id="app">
+			<!-- 悬浮按钮 -->
+			<el-tooltip class="item" effect="dark" content="可在此进行快速查询 !" placement="right" value>
+				<el-button type="primary" icon="el-icon-search" class="popover-button" @click="drawer = true"></el-button>
+			</el-tooltip>
+			<!-- 抽屉 -->
+			<el-drawer title="菜单标识信息快速查询" :visible.sync="drawer" direction="ltr">
+				<el-col :span="24">
+					<iframe class="frame-box" src="./goto_modular_cascader.html" frameborder="0"></iframe>
+				</el-col>
+			</el-drawer>
 			<el-row class="marked-box">
 				<el-col :span="24">
 					<div v-html="md"></div>
@@ -31,6 +55,7 @@
 				data() {
 					return {
 						md: null,
+						drawer: false
 					}
 				},
 				// 生命周期钩子-挂载后执行

@@ -112,8 +112,13 @@ a{
 }
 
 /* markedDowm */
+/* .marked-box{
+	height: 85vh;
+} */
 .marked-box iframe{
 	margin-top: 110px;
 	width: 100%;
-	height: 85vh;
+	height: 83vh;
+	overflow: scroll;
+	box-sizing: border-box;
 }

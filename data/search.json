@@ -522,8 +522,8 @@
 			},{
 				"parent": "JinJieShiYong",
 				"title": "替换标识", 
-				"details": "框架可用替换标识，使用说明及示例", 
-				"address": "进阶使用 - 框架可识别替换标识说明 - 替换标识",
+				"details": "框架替换标识，使用说明及示例", 
+				"address": "进阶使用 - 框架替换标识 - 替换标识",
 				"page_nav_index": "替换标识"
 			}
 		]

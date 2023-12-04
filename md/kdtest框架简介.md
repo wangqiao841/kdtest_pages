@@ -8,12 +8,12 @@
 ### 安装教程
 你可以通过pip包管理工具键入“框架名称” 或者 “框架.whl文件的绝对路径(存放在仓库的dist文件夹下)”完成框架的安装，详情如下:
 
-* [正式版] `pip install kdtest==1.1.5`
-* [测试版] `pip install -i https://test.pypi.org/simple/ kdtest==1.1.5`
-* `pip install  C:/xxxxxx/kdtest-1.1.5-py3-none-any.whl`
+* [正式版] `pip install kdtest==1.1.6`
+* [测试版] `pip install -i https://test.pypi.org/simple/ kdtest==1.1.6`
+* `pip install  C:/xxxxxx/kdtest-1.1.6-py3-none-any.whl`
 
 你可以在控制台中键入 `kdtest -v` 来验证是否安装成功。
-> 1.1.5为当前框架最新版本；推荐安装正式版
+> 1.1.6为当前框架最新版本；推荐安装正式版
 ### 亮点
 灵活、易用、成本低
 ### 框架特点

@@ -23,6 +23,15 @@
 								<img src="./images/key.png" alt="" class="nav-log-icon">
 								<!-- 名称 -->
 								<span class="nav-name-text">KeyWordTest</span>
+								<el-dropdown class="dropdown-box" trigger="click" placement="bottom" @command="versiosConversion">
+									<span class="el-dropdown-link">
+										{{versions}}<i class="el-icon-arrow-down el-icon--right"></i>
+									</span>
+									<el-dropdown-menu slot="dropdown">
+										<el-dropdown-item command="1.x.x">1.x.x</el-dropdown-item>
+										<el-dropdown-item command="2.x.x">2.x.x</el-dropdown-item>
+									</el-dropdown-menu>
+								</el-dropdown>
 							</div>
 							<div class="right-box">
 								<!-- 检索 -->
@@ -78,6 +87,7 @@
 				el: '#app',
 				data() {
 					return {
+						versions: '1.x.x',
 						nav_Search: null,
 						activeIndex: "1",
 						frame_html: "./pages/shouYei/index.html",
@@ -89,6 +99,13 @@
 				// 生命周期钩子-挂载后执行
 				mounted() {this.loadAll();},
 				methods:{
+					// 版本切换
+					versiosConversion(command) {
+						var that = this;
+						that.versions = command;
+						
+						// 刷新说明文档
+					},
 					// 导航按钮点击
 					horizontal(key) {
 						var that = this;

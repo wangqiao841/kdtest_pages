@@ -111,6 +111,12 @@ a{
 	/* overflow: auto; */
 }
 
+/* 版本选择下拉列表 */
+.dropdown-box{
+	margin-left: 20px;
+	color: #fff;
+}
+
 /* markedDowm */
 /* .marked-box{
 	height: 85vh;

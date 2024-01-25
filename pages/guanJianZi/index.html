@@ -90,8 +90,19 @@
 								async: false,
 								success:function(res){
 									that.md = marked.parse(res);
-									$(function(){$.fn.copy_init();})
-									$(function(){prettyPrint();})
+									$(function(){
+										var copy_text_array = [];
+										var pres = $("pre");
+										if (pres.length) {
+											pres.each(function() {
+												var that = this;
+												var copy_text = $(that).find("code").text();
+												copy_text_array.push(copy_text)
+											})
+										}
+										prettyPrint();
+										$.fn.copy_init(copy_text_array);
+									})
 								}
 							})
 						});

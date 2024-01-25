@@ -112,8 +112,19 @@
 						var reg = new RegExp("<pre", "g");
 						var content = that.md = marked.parse(that.file_value[key]);
 						that.md = content.replace(reg, "<pre class='prettyprint linenums'");
-						$(function(){$.fn.copy_init();})
-						$(function(){prettyPrint();})
+						$(function(){
+							var copy_text_array = [];
+							var pres = $("pre");
+							if (pres.length) {
+								pres.each(function() {
+									var that = this;
+									var copy_text = $(that).find("code").text();
+									copy_text_array.push(copy_text)
+								})
+							}
+							prettyPrint();
+							$.fn.copy_init(copy_text_array);
+						})
 					},
 					data_rinse(value) {
 						var that = this;

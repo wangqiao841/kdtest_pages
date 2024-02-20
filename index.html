@@ -103,7 +103,10 @@
 					versiosConversion(command) {
 						var that = this;
 						that.versions = command;
-						
+						that.$message({
+						  message: '功能暂未部署！',
+						  type: 'warning'
+						});
 						// 刷新说明文档
 					},
 					// 导航按钮点击

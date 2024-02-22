@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>入门指南</title>
+		<title>插件开发</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" href="../../css/marked_css.css" />
 		<link rel="stylesheet" href="../../css/obsidian-theme.css">
@@ -15,19 +15,10 @@
 		<script src="../../javaScript/element_UI.js"></script>
 		<script src="../../javaScript/clipboard.min.js"></script>
 		<script src="../../javaScript/cp.js"></script>
-		<style>
-			.el-dialog{
-				width: 75%;
-			}
-		</style>
 	</head>
 
 	<body>
 		<div id="app">
-			<!-- show_img -->
-			<el-dialog :visible.sync="dialogImageShow">
-				<img :src="imgSrc" alt="" style="max-width: 100%;" />
-			</el-dialog>
 			<!-- markedDown -->
 			<div class="marked-box">
 				<el-row>
@@ -35,11 +26,34 @@
 						<!-- 左侧导航 -->
 						<div class="marked-nav-box">
 							<el-menu :default-active="activeIndex" class="el-menu-demo" mode="vertical" @select="horizontal">
-								<el-submenu index="key" v-for="(value, key, index) in fist_nav" :key="index" :index="key">
-									<template slot="title">{{key}}</template>
-									<el-menu-item index="item" v-for="item in fist_nav[key]" :index="item">
+								<el-submenu index="1">
+									<template slot="title">入门</template>
+									<el-menu-item index="准备工作">
 										<img src="../../images/table.png" alt="" class="nav-item-icon">
-										{{item}}
+										准备工作
+									</el-menu-item>
+									<el-menu-item index="编写示例">
+										<img src="../../images/table.png" alt="" class="nav-item-icon">
+										编写示例
+									</el-menu-item>
+								</el-submenu>
+								<el-submenu index="2">
+									<template slot="title">使用上手</template>
+									<el-menu-item index="安装">
+										<img src="../../images/table.png" alt="" class="nav-item-icon">
+										安装
+									</el-menu-item>
+									<el-menu-item index="更新">
+										<img src="../../images/table.png" alt="" class="nav-item-icon">
+										更新
+									</el-menu-item>
+									<el-menu-item index="卸载">
+										<img src="../../images/table.png" alt="" class="nav-item-icon">
+										卸载
+									</el-menu-item>
+									<el-menu-item index="显示">
+										<img src="../../images/table.png" alt="" class="nav-item-icon">
+										显示
 									</el-menu-item>
 								</el-submenu>
 							</el-menu>
@@ -53,22 +67,19 @@
 			</div>
 		</div>
 		<script type="text/javascript">
-			const vm = new Vue({
+			new Vue({
 				el: '#app',
 				data() {
 					return {
-						activeIndex: "安装",
+						activeIndex: "准备工作",
 						md: null,
-						fist_nav: {},
-						file_value: {},
-						imgSrc: "",
-						dialogImageShow: false,
+						file_value: {}
 					}
 				},
 				created() {
 					var that = this;
 					// 数据分段，导航生成
-					that.get_ajax("../../md/getting_start/入门指南.md");
+					that.get_ajax("../../md/plugin/自定义插件开发.md")
 					// 检测是否有传入数据
 					var date = that.get_frame_url();
 					if (date) {that.activeIndex = date;};
@@ -76,7 +87,7 @@
 				// 生命周期钩子-挂载后执行
 				mounted() {
 					var that = this;
-					that.this_ajax(that.activeIndex);
+					that.this_ajax(that.activeIndex)
 				},
 				methods:{
 					// 导航按钮点击
@@ -93,27 +104,12 @@
 							dataType: "html",
 							async: false,
 							success: function(res){
-								var str = marked.parse(res);
-								let regex = /<h1 id=.*?>(.*?)h1>/sg;
-								let regex_t = /<h2 id=.*?>((.*?))h2>/sg;
-								var content = str.split('\n');
-								var key = '';
-								var key_t = '';
-								var value_content = []
-								for (row in content){
-									var value = content[row].match(regex);
-									var value_t = content[row].match(regex_t);
-									if (value) {
-										key = value[0].replace(/<.*?>/g,'')
-										that.fist_nav[key] = [];
-										continue;
-									} else if (value_t) {
-										key_t = value_t[0].replace(/<.*?>/g,'');
-										that.fist_nav[key].push(key_t);
-										value_content = []
-									}
-									value_content.push(content[row])
-									that.file_value[key_t] = value_content.join("\n")
+								var res_new = res.split("##");
+								// console.log(res_new)
+								for (item in res_new){
+									var value = res_new[item].split('\n')[0];
+									var key = value.replace(/[# \r]/g, '');
+									if (key) {that.file_value[key] = res_new[item]}
 								}
 							}
 						});
@@ -121,10 +117,8 @@
 					this_ajax(key) {
 						var that = this;
 						var reg = new RegExp("<pre", "g");
-						var imgReg = new RegExp("<img", "g");
-						var content = that.file_value[key];
-						var contentImg = content.replace(reg, "<pre class='prettyprint linenums'");
-						that.md = contentImg.replace(imgReg, "<img class='md-img-table' onclick='show_img(this)'");
+						var content = that.md = marked.parse(that.file_value[key]);
+						that.md = content.replace(reg, "<pre class='prettyprint linenums'");
 						$(function(){
 							var copy_text_array = [];
 							var pres = $("pre");
@@ -146,14 +140,10 @@
 							return decodeURI(arr[0].substring(arr[0].search("=") + 1));
 						};
 						return "";
-					},
+					}
 				}
-			});
-			function show_img(element) {
-				var that = this;
-				vm.imgSrc = element.getAttribute("src")
-				vm.dialogImageShow = true;
-			}
+			})
 		</script>
 	</body>
+
 </html>

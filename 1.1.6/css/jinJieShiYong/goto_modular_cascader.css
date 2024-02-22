@@ -1,0 +1,42 @@
+#app-box{
+	float: none;
+	margin: 0 auto;
+	padding: 5vh 5vw;
+	border: 1px #f8f8f8 solid;
+	border-radius: 5px;
+	box-shadow: 1px 2px 3px #eaeaea;
+}
+#app-box .main-box{
+	height: 100%;
+	margin: auto;
+}
+#app-box .main-box .cascader-label{
+	width: 100%;
+	margin: 5vh auto;
+}
+#app-box .main-box .code-box{
+	width: 100%;
+	min-height: 15vh;
+	/* line-height: 20vh; */
+	margin: 5vh auto;
+	padding: 10px 20px;
+	box-sizing: border-box;
+	border-radius: 5px;
+	background-color: #2d2d2d;
+	position: relative;
+}
+#app-box .main-box .two-row{
+	min-height: 20vh;
+}
+#app-box .main-box .code-box .code-box-text{
+	color: #f1f1f1;
+	/* position: absolute;
+	top: 50%;
+	transform: translateY(-50%); */
+}
+#app-box .main-box .code-box .code-box-tips{
+	color: #bababa;
+	font-style:italic;
+	/* position: absolute;
+	top: 10px; */
+}

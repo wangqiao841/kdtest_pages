@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>入门指南</title>
+		<title>进阶使用</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" href="../../css/marked_css.css" />
 		<link rel="stylesheet" href="../../css/obsidian-theme.css">
@@ -15,19 +15,9 @@
 		<script src="../../javaScript/element_UI.js"></script>
 		<script src="../../javaScript/clipboard.min.js"></script>
 		<script src="../../javaScript/cp.js"></script>
-		<style>
-			.el-dialog{
-				width: 75%;
-			}
-		</style>
 	</head>
-
 	<body>
 		<div id="app">
-			<!-- show_img -->
-			<el-dialog :visible.sync="dialogImageShow">
-				<img :src="imgSrc" alt="" style="max-width: 100%;" />
-			</el-dialog>
 			<!-- markedDown -->
 			<div class="marked-box">
 				<el-row>
@@ -38,7 +28,8 @@
 								<el-submenu index="key" v-for="(value, key, index) in fist_nav" :key="index" :index="key">
 									<template slot="title">{{key}}</template>
 									<el-menu-item index="item" v-for="item in fist_nav[key]" :index="item">
-										<img src="../../images/table.png" alt="" class="nav-item-icon">
+										<img src="../../images/function.png" alt="" class="nav-item-icon" v-if="!/^[\u4E00-\u9FA5]+$/.test(item)">
+										<img src="../../images/table.png" alt="" class="nav-item-icon" v-else>
 										{{item}}
 									</el-menu-item>
 								</el-submenu>
@@ -53,22 +44,20 @@
 			</div>
 		</div>
 		<script type="text/javascript">
-			const vm = new Vue({
+			new Vue({
 				el: '#app',
 				data() {
 					return {
-						activeIndex: "安装",
+						activeIndex: "userLogin方法",
 						md: null,
 						fist_nav: {},
-						file_value: {},
-						imgSrc: "",
-						dialogImageShow: false,
+						file_value: {}
 					}
 				},
 				created() {
 					var that = this;
 					// 数据分段，导航生成
-					that.get_ajax("../../md/getting_start/入门指南.md");
+					that.get_ajax("../../md/advanced_use/进阶使用.md");
 					// 检测是否有传入数据
 					var date = that.get_frame_url();
 					if (date) {that.activeIndex = date;};
@@ -121,10 +110,8 @@
 					this_ajax(key) {
 						var that = this;
 						var reg = new RegExp("<pre", "g");
-						var imgReg = new RegExp("<img", "g");
 						var content = that.file_value[key];
-						var contentImg = content.replace(reg, "<pre class='prettyprint linenums'");
-						that.md = contentImg.replace(imgReg, "<img class='md-img-table' onclick='show_img(this)'");
+						that.md = content.replace(reg, "<pre class='prettyprint linenums'");
 						$(function(){
 							var copy_text_array = [];
 							var pres = $("pre");
@@ -146,14 +133,10 @@
 							return decodeURI(arr[0].substring(arr[0].search("=") + 1));
 						};
 						return "";
-					},
+					}
 				}
-			});
-			function show_img(element) {
-				var that = this;
-				vm.imgSrc = element.getAttribute("src")
-				vm.dialogImageShow = true;
-			}
+			})
 		</script>
 	</body>
+
 </html>

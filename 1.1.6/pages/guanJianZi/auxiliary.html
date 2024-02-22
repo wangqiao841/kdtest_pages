@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>入门指南</title>
+		<title>auxiliary关键字</title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link rel="stylesheet" href="../../css/marked_css.css" />
 		<link rel="stylesheet" href="../../css/obsidian-theme.css">
@@ -15,30 +15,30 @@
 		<script src="../../javaScript/element_UI.js"></script>
 		<script src="../../javaScript/clipboard.min.js"></script>
 		<script src="../../javaScript/cp.js"></script>
-		<style>
-			.el-dialog{
-				width: 75%;
-			}
-		</style>
 	</head>
 
 	<body>
 		<div id="app">
-			<!-- show_img -->
-			<el-dialog :visible.sync="dialogImageShow">
-				<img :src="imgSrc" alt="" style="max-width: 100%;" />
-			</el-dialog>
 			<!-- markedDown -->
 			<div class="marked-box">
 				<el-row>
+					<el-col :span="24">
+						<!-- 顶部面包屑 -->
+						<div class="marked-breadcrumb-box">
+							<el-breadcrumb separator="/">
+								<el-breadcrumb-item><a @click="go_to_page">关键字</a></el-breadcrumb-item>
+								<el-breadcrumb-item>框架辅助关键字方法 (auxiliary)</el-breadcrumb-item>
+							</el-breadcrumb>
+						</div>
+					</el-col>
 					<el-col :span="5">
 						<!-- 左侧导航 -->
 						<div class="marked-nav-box">
-							<el-menu :default-active="activeIndex" class="el-menu-demo" mode="vertical" @select="horizontal">
-								<el-submenu index="key" v-for="(value, key, index) in fist_nav" :key="index" :index="key">
-									<template slot="title">{{key}}</template>
-									<el-menu-item index="item" v-for="item in fist_nav[key]" :index="item">
-										<img src="../../images/table.png" alt="" class="nav-item-icon">
+							<el-menu :default-active="activeIndexOld" class="el-menu-demo" mode="vertical" @select="horizontal">
+								<el-submenu index="1">
+									<template slot="title">辅助关键字方法 (auxiliary)</template>
+									<el-menu-item index="item" v-for="item in fist_nav" :index="item">
+										<img src="../../images/function.png" alt="" class="nav-item-icon">
 										{{item}}
 									</el-menu-item>
 								</el-submenu>
@@ -53,36 +53,37 @@
 			</div>
 		</div>
 		<script type="text/javascript">
-			const vm = new Vue({
+			new Vue({
 				el: '#app',
 				data() {
 					return {
-						activeIndex: "安装",
+						nav_Search: null,
+						activeIndex: "1",
+						activeIndexOld: "element_index()关键字",
 						md: null,
-						fist_nav: {},
-						file_value: {},
-						imgSrc: "",
-						dialogImageShow: false,
+						fist_nav: [],
+						file_value: {}
 					}
 				},
 				created() {
 					var that = this;
 					// 数据分段，导航生成
-					that.get_ajax("../../md/getting_start/入门指南.md");
+					that.get_ajax("../../md/page_action/auxiliary关键字.md");
 					// 检测是否有传入数据
 					var date = that.get_frame_url();
-					if (date) {that.activeIndex = date;};
+					if (date) {that.activeIndexOld = date;};
+					
 				},
 				// 生命周期钩子-挂载后执行
 				mounted() {
 					var that = this;
-					that.this_ajax(that.activeIndex);
+					that.this_ajax(that.activeIndexOld);
+					
 				},
 				methods:{
 					// 导航按钮点击
 					horizontal(key) {
 						var that = this;
-						console.log(key);
 						that.this_ajax(key);
 					},
 					get_ajax(src){
@@ -93,38 +94,24 @@
 							dataType: "html",
 							async: false,
 							success: function(res){
-								var str = marked.parse(res);
-								let regex = /<h1 id=.*?>(.*?)h1>/sg;
-								let regex_t = /<h2 id=.*?>((.*?))h2>/sg;
-								var content = str.split('\n');
-								var key = '';
-								var key_t = '';
-								var value_content = []
-								for (row in content){
-									var value = content[row].match(regex);
-									var value_t = content[row].match(regex_t);
-									if (value) {
-										key = value[0].replace(/<.*?>/g,'')
-										that.fist_nav[key] = [];
-										continue;
-									} else if (value_t) {
-										key_t = value_t[0].replace(/<.*?>/g,'');
-										that.fist_nav[key].push(key_t);
-										value_content = []
+								var res_new = res.split("***");
+								for (item in res_new){
+									let regex_t = /### (.*?) 关键字.*?\n/sg;
+									var value_t = res_new[item].match(regex_t);
+									if (value_t) {
+										that.file_value[that.data_rinse(value_t[0])] = res_new[item];
+										that.fist_nav.push(that.data_rinse(value_t[0]));
 									}
-									value_content.push(content[row])
-									that.file_value[key_t] = value_content.join("\n")
 								}
+								console.log(file_value)
 							}
 						});
 					},
 					this_ajax(key) {
 						var that = this;
 						var reg = new RegExp("<pre", "g");
-						var imgReg = new RegExp("<img", "g");
-						var content = that.file_value[key];
-						var contentImg = content.replace(reg, "<pre class='prettyprint linenums'");
-						that.md = contentImg.replace(imgReg, "<img class='md-img-table' onclick='show_img(this)'");
+						var content = that.md = marked.parse(that.file_value[key]);
+						that.md = content.replace(reg, "<pre class='prettyprint linenums'");
 						$(function(){
 							var copy_text_array = [];
 							var pres = $("pre");
@@ -139,6 +126,15 @@
 							$.fn.copy_init(copy_text_array);
 						})
 					},
+					data_rinse(value) {
+						var that = this;
+						var that_value = value.replace(/[\'\"\\\/\b\f\n\r\t]/g, '');
+						var that_value = that_value.replace(/[# ]/g, '');
+						return that_value;
+					},
+					go_to_page(){
+						window.location.href = "./index.html"
+					},
 					get_frame_url() {
 						var reg = new RegExp("[^\?&]?" + encodeURI(name) + "=[^&]+");
 						var arr = window.parent.document.getElementById("Ateon-SetParent-iframe").contentWindow.location.search.match(reg);
@@ -146,14 +142,10 @@
 							return decodeURI(arr[0].substring(arr[0].search("=") + 1));
 						};
 						return "";
-					},
+					}
 				}
-			});
-			function show_img(element) {
-				var that = this;
-				vm.imgSrc = element.getAttribute("src")
-				vm.dialogImageShow = true;
-			}
+			})
 		</script>
 	</body>
+
 </html>
